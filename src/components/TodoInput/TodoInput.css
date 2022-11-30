@@ -1,0 +1,18 @@
+.todo-input_section {
+	height: 50px;
+}
+
+.todo-input_button {
+	background-color: blue;
+	border: 1px solid #000;
+	border-radius: 3px;
+	width: 100px;
+	height: 100%;
+	color: #fff;
+	cursor: pointer;
+}
+
+.todo-input_input {
+	height: 100%;
+	box-sizing: border-box;
+}
