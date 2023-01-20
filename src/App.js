@@ -1,53 +1,64 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TodoList from './components/TodoList/TodoList';
 import TodoInput from './components/TodoInput/TodoInput';
 import './App.css';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            rows: [
-                {id: 1, title: 'title', isDone: false}
-            ]
-        }
-    }
+function App() {
+    const [todos, setTodos] = useState([]);
 
-    handlerAddTodo = (todoValue) => {
+    const handlerAddTodo = (todoValue) => {
+        let todo = {title: todoValue, completed: false};
+
         if (todoValue) {
-            this.setState({
-                rows: [...this.state.rows, {id: Math.random(), title: todoValue, isDone: false}]
+            setTodos([...todos, todo]);
+
+            fetch('https://jsonplaceholder.typicode.com/todos', {
+                method: 'POST',
+                body: JSON.stringify(todo),
+                headers: {'Content-Type': 'application/json'}
             })
+                .then(res => res.json())
+                .then(data => setTodos([...todos, data]))
         }
     }
 
-    changeStatus = (id) => {
-        let newArr = this.state.rows.map(el => {
-            if (el.id === +id) {
-                el.isDone = !el.isDone
-            }
-            return el
-        })
-        this.setState({
-            rows: [...newArr]
+    const changeStatus = (id) => {
+        let newItem = todos.find(todo => todo.id === +id);
+        console.log(newItem)
+        newItem = {...newItem, completed: !newItem.completed};
+
+        let newArr = todos.map(el => el.id === id ? newItem : el);
+
+        setTodos(newArr);
+
+        fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(newItem),
+            headers: {'Content-Type': 'application/json'}
         })
     }
 
-    getParrentEl = (parrentID) => {
-        this.setState({
-            rows: [...this.state.rows.filter(el => el.id !== +parrentID)]
-        })
+    const getParrentEl = (parrentID) => {
+        fetch(`https://jsonplaceholder.typicode.com/todos/${parrentID}`, {
+            method: 'DELETE'
+        });
+
+        setTodos([...todos.filter(el => el.id !== +parrentID)]);
     }
 
-    render() {
-        return (
-            <div className="App">
-                <h1>ToDo App</h1>
-                <TodoList todoData={this.state.rows} changeStatus={this.changeStatus} getParrentEl={this.getParrentEl} />
-                <TodoInput handlerAddTodo={this.handlerAddTodo} />
-            </div>
-        );
-    }
+    useEffect(() => {
+        fetch('https://jsonplaceholder.typicode.com/todos')
+            .then(res => res.json())
+            .then(data => setTodos(data))
+    }, []);
+
+    return (
+        <div className="App">
+            <h1>ToDo App</h1>
+            <TodoList todoData={todos} changeStatus={changeStatus} getParrentEl={getParrentEl} />
+            <TodoInput handlerAddTodo={handlerAddTodo} />
+        </div>
+    );
 }
 
 export default App;
