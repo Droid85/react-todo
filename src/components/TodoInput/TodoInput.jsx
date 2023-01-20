@@ -28,7 +28,6 @@ class TodoInput extends React.Component {
 			inputValue: ''
 		})
 	}
-
 	render() {
 		return (
 			<section className='todo-input_section'>

@@ -12,7 +12,6 @@ class TodoList extends React.Component {
 	handlerCloseList = (e) => {
 		this.props.getParrentEl(e.target.parentElement.id)
 	}
-
 	render() {
 		return (
 			<section className='todo-list_section'>
