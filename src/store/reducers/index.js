@@ -7,12 +7,12 @@ const initialState = sessionStorage.getItem('todos') ? JSON.parse(sessionStorage
 const rootReducer = (state = initialState, {type, payload}) => {
 	switch(type) {
 		case ACTION_ADD_TODO:
-			return [...state, {id: Math.random(), title: payload, isDone: false}]
+			return [...state, {id: payload.id, title: payload.title, isDone: false}]
 		case ACTION_DELETE_TODO:
-			return [...state.filter(el => el.id !== +payload)]
+			return [...state.filter(el => el.id !== +payload.id)]
 		case ACTION_UPDATE_TODO:
 			let newArr = state.map(el => {
-	            if (el.id === +payload) {
+	            if (el.id === +payload.id) {
 	                el.isDone = !el.isDone
 	            }
 	            return el

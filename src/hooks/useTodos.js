@@ -9,16 +9,16 @@ export default function useTodos() {
 
     const handlerAddTodo = (todoValue) => {
         if (todoValue) {
-            dispatch(addTodo(todoValue));
+            dispatch(addTodo({id: Math.random(), title: todoValue}));
         }
     }
 
     const changeStatus = (id) => {
-        dispatch(updateTodo(id));
+        dispatch(updateTodo({id: id}));
     }
 
     const getParrentEl = (parrentID) => {
-        dispatch(deleteTodo(parrentID));
+        dispatch(deleteTodo({id: parrentID}));
     }
 
     useEffect(() => {
