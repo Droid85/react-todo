@@ -1,49 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './TodoInput.css';
 
-class TodoInput extends React.Component {
-	constructor(props) {
-        super(props)
-        this.state = {
-            inputValue: ''
-        }
+function TodoInput(props) {
+	const [inputValue, setInputValue] = useState('');
+
+    const handlerChangeInput = (e) => {
+    	setInputValue(e.target.value);
     }
 
-    handlerChangeInput = (e) => {
-    	this.setState({
-    		inputValue: e.target.value
-    	})
-    }
-
-    handlerSendInputText = (e) => {
+    const handlerSendInputText = (e) => {
     	if (e.key === 'Enter') {
-    		this.handlerSetValue();
+    		handlerSetValue();
     	}
     }
 
-	handlerSetValue = () => {
-		this.props.handlerAddTodo(this.state.inputValue)
+	const handlerSetValue = () => {
+		props.handlerAddTodo(inputValue);
 
-		this.setState({
-			inputValue: ''
-		})
+		setInputValue('');
 	}
 
-	render() {
-		return (
-			<section className='todo-input_section'>
-				<input type='text'
-					value={this.state.inputValue}
-					placeholder='Enter text'
-					id='todoInputValue'
-					className='todo-input_input'
-					onChange={this.handlerChangeInput}
-					onKeyUp={this.handlerSendInputText}
-				/>
-				<button className='todo-input_button' onClick={this.handlerSetValue}>Add</button>
-			</section>
-		);
-	}
+	return (
+		<section className='todo-input_section'>
+			<input type='text'
+				value={inputValue}
+				placeholder='Enter text'
+				id='todoInputValue'
+				className='todo-input_input'
+				onChange={handlerChangeInput}
+				onKeyUp={handlerSendInputText}
+			/>
+			<button className='todo-input_button' onClick={handlerSetValue}>Add</button>
+		</section>
+	);
 }
 
 export default TodoInput;
