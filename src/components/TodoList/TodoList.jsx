@@ -20,7 +20,7 @@ function TodoList(props) {
 					li key={item.id}
 						id={item.id}
 						onClick={handlerSetStatus}
-						className='todo-list_item'>
+						className={item.isDone ? 'todo-list_item todo_list-done' : 'todo-list_item'}>
 						{item.title}
 						<button className='list_close-btn' onClick={handlerCloseList} >X</button>
 					</li>
